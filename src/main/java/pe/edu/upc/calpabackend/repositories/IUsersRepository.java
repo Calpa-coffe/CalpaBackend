@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pe.edu.upc.calpabackend.entities.Users;
 
 @Repository
-public interface IUsersRepository extends JpaRepository<Users, Integer> {
+public interface IUsersRepository extends JpaRepository<Users, Long> {
 }

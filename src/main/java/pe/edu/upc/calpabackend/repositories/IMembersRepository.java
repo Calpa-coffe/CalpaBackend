@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pe.edu.upc.calpabackend.entities.Members;
 
 @Repository
-public interface IMembersRepository extends JpaRepository<Members, Long> {
+public interface IMembersRepository extends JpaRepository<Members, Integer> {
 }

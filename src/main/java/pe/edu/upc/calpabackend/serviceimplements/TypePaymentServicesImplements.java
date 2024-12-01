@@ -1,4 +1,35 @@
 package pe.edu.upc.calpabackend.serviceimplements;
 
-public class TypePaymentServicesImplements {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import pe.edu.upc.calpabackend.entities.TypePayments;
+import pe.edu.upc.calpabackend.repositories.ITypePaymentsRepository;
+import pe.edu.upc.calpabackend.serviceinterfaces.ITypePaymentServices;
+
+import java.util.List;
+
+@Service
+public class TypePaymentServicesImplements implements ITypePaymentServices {
+    @Autowired
+    private ITypePaymentsRepository tR;
+
+    @Override
+    public TypePayments insert(TypePayments typePayments) {
+        return tR.save(typePayments);
+    }
+
+    @Override
+    public List<TypePayments> list() {
+        return tR.findAll();
+    }
+
+    @Override
+    public void delete(int id) {
+        tR.deleteById(id);
+    }
+
+    @Override
+    public void update(TypePayments typePayments) {
+        tR.save(typePayments);
+    }
 }
