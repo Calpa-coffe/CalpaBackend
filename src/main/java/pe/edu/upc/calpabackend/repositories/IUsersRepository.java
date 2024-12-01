@@ -6,4 +6,6 @@ import pe.edu.upc.calpabackend.entities.Users;
 
 @Repository
 public interface IUsersRepository extends JpaRepository<Users, Long> {
+    public Users findByUsername(String nameUser);
+
 }

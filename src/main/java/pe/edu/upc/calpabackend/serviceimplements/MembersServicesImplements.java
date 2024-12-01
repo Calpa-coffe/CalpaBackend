@@ -30,6 +30,11 @@ public class MembersServicesImplements implements IMembersServices {
 
     @Override
     public void update(Members members) {
+        mR.save(members);
+    }
 
+    @Override
+    public Members listarId(int id) {
+        return mR.findById(id).orElse(new Members());
     }
 }

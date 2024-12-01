@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "UserTable")
 @Getter
 @Setter
 public class Users implements Serializable {

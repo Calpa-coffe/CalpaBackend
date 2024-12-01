@@ -2,6 +2,7 @@ package pe.edu.upc.calpabackend.serviceimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pe.edu.upc.calpabackend.entities.Roles;
 import pe.edu.upc.calpabackend.entities.Suppliers;
 import pe.edu.upc.calpabackend.repositories.IDetailSuppliersRepository;
 import pe.edu.upc.calpabackend.repositories.ISuppliersRepository;
@@ -32,5 +33,10 @@ public class SuppliersServicesImplements implements ISuppliersServices {
     @Override
     public void update(Suppliers suppliers) {
         sR.save(suppliers);
+    }
+
+    @Override
+    public Suppliers listarId(int id) {
+        return sR.findById(id).orElse(new Suppliers());
     }
 }

@@ -9,4 +9,6 @@ public interface IAttendancesServices {
     public List<Attendances> list();
     public void delete(int id);
     public void update(Attendances attendances);
+    public Attendances listarId(int id);
+
 }

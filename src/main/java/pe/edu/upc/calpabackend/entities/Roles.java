@@ -18,7 +18,7 @@ public class Roles implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "rol", nullable = false, length = 35)
     private String rol;
 
     @ManyToOne

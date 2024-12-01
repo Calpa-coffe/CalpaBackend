@@ -2,6 +2,7 @@ package pe.edu.upc.calpabackend.serviceimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pe.edu.upc.calpabackend.entities.TypePayments;
 import pe.edu.upc.calpabackend.entities.Users;
 import pe.edu.upc.calpabackend.repositories.IUsersRepository;
 import pe.edu.upc.calpabackend.serviceinterfaces.IUsersServices;
@@ -32,5 +33,10 @@ public class UsersServicesImplements implements IUsersServices {
     @Override
     public void update(Users user) {
         uR.save(user);
+    }
+
+    @Override
+    public Users listarId(Long id) {
+        return uR.findById(id).orElse(new Users());
     }
 }

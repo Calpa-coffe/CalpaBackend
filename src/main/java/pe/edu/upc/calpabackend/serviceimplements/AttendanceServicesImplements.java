@@ -33,4 +33,9 @@ public class AttendanceServicesImplements implements IAttendancesServices {
     public void update(Attendances attendances) {
         aR.save(attendances);
     }
+
+    @Override
+    public Attendances listarId(int id) {
+        return aR.findById(id).orElse(new Attendances());
+    }
 }

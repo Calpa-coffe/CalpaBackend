@@ -2,6 +2,7 @@ package pe.edu.upc.calpabackend.serviceimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pe.edu.upc.calpabackend.entities.Bookings;
 import pe.edu.upc.calpabackend.entities.DetailSuppliers;
 import pe.edu.upc.calpabackend.repositories.IDetailSuppliersRepository;
 import pe.edu.upc.calpabackend.serviceinterfaces.IDetailSuppliersServices;
@@ -31,5 +32,10 @@ public class DetailSuppliersServicesImplements implements IDetailSuppliersServic
     @Override
     public void update(DetailSuppliers detailSuppliers) {
         dR.save(detailSuppliers);
+    }
+
+    @Override
+    public DetailSuppliers listarId(int id) {
+        return dR.findById(id).orElse(new DetailSuppliers());
     }
 }

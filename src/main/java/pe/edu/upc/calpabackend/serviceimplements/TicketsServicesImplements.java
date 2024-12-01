@@ -2,6 +2,7 @@ package pe.edu.upc.calpabackend.serviceimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pe.edu.upc.calpabackend.entities.Suppliers;
 import pe.edu.upc.calpabackend.entities.Tickets;
 import pe.edu.upc.calpabackend.repositories.ITicketsRepository;
 import pe.edu.upc.calpabackend.serviceinterfaces.ITicketsServices;
@@ -31,5 +32,10 @@ public class TicketsServicesImplements implements ITicketsServices {
     @Override
     public void update(Tickets tickets) {
         iR.save(tickets);
+    }
+
+    @Override
+    public Tickets listarId(int id) {
+        return iR.findById(id).orElse(new Tickets());
     }
 }

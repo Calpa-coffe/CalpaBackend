@@ -32,4 +32,9 @@ public class BookingsServicesImplements implements IBookingsServices {
     public void update(Bookings bookings) {
         bR.save(bookings);
     }
+
+    @Override
+    public Bookings listarId(int id) {
+        return bR.findById(id).orElse(new Bookings());
+    }
 }
