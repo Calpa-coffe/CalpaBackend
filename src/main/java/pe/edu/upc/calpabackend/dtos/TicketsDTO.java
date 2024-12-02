@@ -20,6 +20,7 @@ public class TicketsDTO {
     private LocalDate datepay;
     private Double total;
     private Double amountpayment;
+    private int quantity;
 
     private Products product;
 

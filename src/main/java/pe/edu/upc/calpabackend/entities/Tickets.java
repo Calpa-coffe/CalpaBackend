@@ -26,6 +26,8 @@ public class Tickets {
     private Double total;
     @Column(name = "amount", nullable = false, length = 254)
     private Double amountpayment;
+    @Column(name = "quantity", nullable = false, length = 254)
+    private int quantity;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

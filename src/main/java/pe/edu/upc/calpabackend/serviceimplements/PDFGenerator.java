@@ -122,19 +122,15 @@ public class PDFGenerator {
     }
 
     private static void addProductTable(Document document, TicketsDTO ticketDTO) throws DocumentException {
+
         PdfPTable productTable = new PdfPTable(4); // Cantidad, Descripción, P/U, Total
         productTable.setWidthPercentage(100);
         productTable.setWidths(new float[]{7, 50, 25, 25});
 
-        productTable.addCell(createHeaderCell("Cant."));
-        productTable.addCell(createHeaderCell("Descripción"));
-        productTable.addCell(createHeaderCell("P/U"));
-        productTable.addCell(createHeaderCell("Total"));
-
-        productTable.addCell(createCell("1", false));
+        productTable.addCell(createCell(String.valueOf(ticketDTO.getQuantity()), false));
         productTable.addCell(createCell(ticketDTO.getProduct().getNameproduct(), false));
         productTable.addCell(createCell("S/ " + String.format("%.2f", ticketDTO.getProduct().getPrice()), false));
-        productTable.addCell(createCell("S/ " + String.format("%.2f", ticketDTO.getProduct().getPrice()), false));
+        productTable.addCell(createCell("S/ " + String.format("%.2f", ticketDTO.getProduct().getPrice() * ticketDTO.getQuantity()), false));
 
         document.add(productTable);
     }
@@ -158,7 +154,14 @@ public class PDFGenerator {
     }
 
     private static void addAdditionalInfo(Document document, TicketsDTO ticketDTO) throws DocumentException {
-        double turned = ticketDTO.getTotal() - ticketDTO.getAmountpayment();
+        double turned = ticketDTO.getAmountpayment() - ticketDTO.getTotal();
+
+
+        Paragraph paymentquantity = new Paragraph("Pagó con: S/ " + String.format("%.2f", ticketDTO.getAmountpayment()),
+                FontFactory.getFont(FontFactory.HELVETICA, 8));
+        paymentquantity.setAlignment(Element.ALIGN_LEFT);
+        paymentquantity.setSpacingBefore(10);
+        document.add(paymentquantity);
 
         Paragraph additionalInfo = new Paragraph("Vuelto: S/ " + String.format("%.2f", turned),
                 FontFactory.getFont(FontFactory.HELVETICA, 8));
