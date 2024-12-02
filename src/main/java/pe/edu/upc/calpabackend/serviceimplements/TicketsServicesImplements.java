@@ -1,8 +1,10 @@
 package pe.edu.upc.calpabackend.serviceimplements;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pe.edu.upc.calpabackend.entities.Suppliers;
+import pe.edu.upc.calpabackend.exception.ResourceNotFoundException;
+import pe.edu.upc.calpabackend.dtos.TicketsDTO;
 import pe.edu.upc.calpabackend.entities.Tickets;
 import pe.edu.upc.calpabackend.repositories.ITicketsRepository;
 import pe.edu.upc.calpabackend.serviceinterfaces.ITicketsServices;
@@ -13,6 +15,9 @@ import java.util.List;
 public class TicketsServicesImplements implements ITicketsServices {
     @Autowired
     private ITicketsRepository iR;
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     @Override
     public Tickets insert(Tickets tickets) {
@@ -35,7 +40,12 @@ public class TicketsServicesImplements implements ITicketsServices {
     }
 
     @Override
-    public Tickets listarId(int id) {
-        return iR.findById(id).orElse(new Tickets());
+    public TicketsDTO getTicketById(Integer id) {
+        Tickets ticket = iR.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found with id: " + id));
+        // Mapear entidad a DTO
+        return modelMapper.map(ticket, TicketsDTO.class);
     }
+
+
 }

@@ -1,16 +1,22 @@
 package pe.edu.upc.calpabackend.controllers;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.calpabackend.dtos.SuppliersDTO;
 import pe.edu.upc.calpabackend.dtos.TicketsDTO;
 import pe.edu.upc.calpabackend.entities.Suppliers;
 import pe.edu.upc.calpabackend.entities.Tickets;
+import pe.edu.upc.calpabackend.exception.ResourceNotFoundException;
 import pe.edu.upc.calpabackend.serviceinterfaces.ITicketsServices;
 
+import java.io.OutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static pe.edu.upc.calpabackend.serviceimplements.PDFgenerator.generatePDF;
 
 @RestController
 @RequestMapping("/tickets")
@@ -45,4 +51,26 @@ public class TicketsController {
     public void eliminar(@PathVariable("id") Integer id){
         tS.delete(id);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TicketsDTO> getTicket(@PathVariable Integer id) {
+        TicketsDTO ticketDTO = tS.getTicketById(id);
+        return ResponseEntity.ok(ticketDTO);
+    }
+
+    @GetMapping("/{id}/download")
+    public void downloadTicket(@PathVariable Integer id, HttpServletResponse response) throws Exception {
+        TicketsDTO ticketDTO = tS.getTicketById(id);
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=boleta_" + id + ".pdf");
+
+        OutputStream outputStream = response.getOutputStream();
+        generatePDF(ticketDTO, outputStream);
+        outputStream.flush();
+    }
+
+
+
+
 }

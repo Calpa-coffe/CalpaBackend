@@ -18,7 +18,7 @@ public class Tickets {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "clientname", nullable = false, length = 254)
+    @Column(name = "clientname", nullable = true, length = 254)
     private String clientname;
     @Column(name = "datepay", nullable = false, length = 254)
     private LocalDate datepay;
@@ -34,7 +34,7 @@ public class Tickets {
     private Users users;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = true)
     private Members members;
 
     @ManyToOne
