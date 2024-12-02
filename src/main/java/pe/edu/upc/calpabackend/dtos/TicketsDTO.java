@@ -11,6 +11,7 @@ import pe.edu.upc.calpabackend.entities.TypePayments;
 import pe.edu.upc.calpabackend.entities.Users;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,7 +23,7 @@ public class TicketsDTO {
     private Double amountpayment;
     private int quantity;
 
-    private Products product;
+    private List<ProductDTO> product;
 
     private Users users;
 

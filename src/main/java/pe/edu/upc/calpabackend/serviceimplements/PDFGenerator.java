@@ -7,6 +7,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import pe.edu.upc.calpabackend.dtos.ProductDTO;
 import pe.edu.upc.calpabackend.dtos.TicketsDTO;
 
 import javax.imageio.ImageIO;
@@ -122,18 +123,24 @@ public class PDFGenerator {
     }
 
     private static void addProductTable(Document document, TicketsDTO ticketDTO) throws DocumentException {
-
         PdfPTable productTable = new PdfPTable(4); // Cantidad, Descripción, P/U, Total
         productTable.setWidthPercentage(100);
-        productTable.setWidths(new float[]{7, 50, 25, 25});
+        productTable.setWidths(new float[]{10, 50, 20, 20});
 
-        productTable.addCell(createCell(String.valueOf(ticketDTO.getQuantity()), false));
-        productTable.addCell(createCell(ticketDTO.getProduct().getNameproduct(), false));
-        productTable.addCell(createCell("S/ " + String.format("%.2f", ticketDTO.getProduct().getPrice()), false));
-        productTable.addCell(createCell("S/ " + String.format("%.2f", ticketDTO.getProduct().getPrice() * ticketDTO.getQuantity()), false));
+        // Iterar sobre los productos
+        for (ProductDTO product : ticketDTO.getProduct()) {
+            int quantity = ticketDTO.getQuantity(); // Obtener cantidad del producto
+            double price = product.getPrice();   // Obtener precio unitario
+
+            productTable.addCell(createCell(String.valueOf(quantity), false));
+            productTable.addCell(createCell(product.getNameproduct(), false));
+            productTable.addCell(createCell("S/ " + String.format("%.2f", price), false));
+            productTable.addCell(createCell("S/ " + String.format("%.2f", quantity * price), false));
+        }
 
         document.add(productTable);
     }
+
 
     private static void addTotals(Document document, TicketsDTO ticketDTO) throws DocumentException {
         double IGV = ticketDTO.getTotal() * 0.18;
@@ -156,19 +163,29 @@ public class PDFGenerator {
     private static void addAdditionalInfo(Document document, TicketsDTO ticketDTO) throws DocumentException {
         double turned = ticketDTO.getAmountpayment() - ticketDTO.getTotal();
 
-
+        // Mostrar monto pagado
         Paragraph paymentquantity = new Paragraph("Pagó con: S/ " + String.format("%.2f", ticketDTO.getAmountpayment()),
                 FontFactory.getFont(FontFactory.HELVETICA, 8));
         paymentquantity.setAlignment(Element.ALIGN_LEFT);
         paymentquantity.setSpacingBefore(10);
         document.add(paymentquantity);
 
-        Paragraph additionalInfo = new Paragraph("Vuelto: S/ " + String.format("%.2f", turned),
-                FontFactory.getFont(FontFactory.HELVETICA, 8));
-        additionalInfo.setAlignment(Element.ALIGN_LEFT);
-        additionalInfo.setSpacingBefore(10);
-        document.add(additionalInfo);
+        // Condicional para mostrar vuelto o saldo insuficiente
+        if (turned < 0) {
+            Paragraph insufficientBalance = new Paragraph("Saldo insuficiente",
+                    FontFactory.getFont(FontFactory.HELVETICA_BOLD, 8, BaseColor.RED));
+            insufficientBalance.setAlignment(Element.ALIGN_LEFT);
+            insufficientBalance.setSpacingBefore(10);
+            document.add(insufficientBalance);
+        } else {
+            Paragraph additionalInfo = new Paragraph("Vuelto: S/ " + String.format("%.2f", turned),
+                    FontFactory.getFont(FontFactory.HELVETICA, 8));
+            additionalInfo.setAlignment(Element.ALIGN_LEFT);
+            additionalInfo.setSpacingBefore(10);
+            document.add(additionalInfo);
+        }
     }
+
 
     private static String generateQRContent(TicketsDTO ticketDTO) {
         return "Boleta: BBB1-" + ticketDTO.getId() + "\n" +

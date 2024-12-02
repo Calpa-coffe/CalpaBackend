@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tickets")
@@ -29,9 +30,13 @@ public class Tickets {
     @Column(name = "quantity", nullable = false, length = 254)
     private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Products product;
+    @ManyToMany
+    @JoinTable(
+            name = "ticket_products",
+            joinColumns = @JoinColumn(name = "ticket_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Products> product;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

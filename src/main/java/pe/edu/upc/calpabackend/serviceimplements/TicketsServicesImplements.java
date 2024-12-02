@@ -3,6 +3,7 @@ package pe.edu.upc.calpabackend.serviceimplements;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pe.edu.upc.calpabackend.entities.Products;
 import pe.edu.upc.calpabackend.exception.ResourceNotFoundException;
 import pe.edu.upc.calpabackend.dtos.TicketsDTO;
 import pe.edu.upc.calpabackend.entities.Tickets;
@@ -21,6 +22,11 @@ public class TicketsServicesImplements implements ITicketsServices {
 
     @Override
     public Tickets insert(Tickets tickets) {
+        double total = 0.0;
+        for (Products product : tickets.getProduct()) {
+            total += product.getPrice() * tickets.getQuantity();
+        }
+        tickets.setTotal(total);
         return iR.save(tickets);
     }
 
