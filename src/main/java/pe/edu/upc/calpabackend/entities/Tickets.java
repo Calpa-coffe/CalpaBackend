@@ -24,6 +24,8 @@ public class Tickets {
     private LocalDate datepay;
     @Column(name = "total", nullable = false, length = 254)
     private Double total;
+    @Column(name = "amount", nullable = false, length = 254)
+    private Double amountpayment;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

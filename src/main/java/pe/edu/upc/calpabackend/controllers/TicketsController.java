@@ -16,7 +16,8 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static pe.edu.upc.calpabackend.serviceimplements.PDFgenerator.generatePDF;
+import static pe.edu.upc.calpabackend.serviceimplements.PDFGenerator.generatePDF;
+
 
 @RestController
 @RequestMapping("/tickets")

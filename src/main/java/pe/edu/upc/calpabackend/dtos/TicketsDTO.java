@@ -19,6 +19,7 @@ public class TicketsDTO {
     private String clientname;
     private LocalDate datepay;
     private Double total;
+    private Double amountpayment;
 
     private Products product;
 
