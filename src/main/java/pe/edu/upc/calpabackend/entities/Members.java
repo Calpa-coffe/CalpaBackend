@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "members")
 @AllArgsConstructor
@@ -24,4 +26,6 @@ public class Members {
     private String phoneclient;
     @Column(name = "email", nullable = false, length = 200)
     private String email;
+    @Column(name = "birthday", nullable = true, length = 254)
+    private LocalDate birthday;
 }

@@ -4,6 +4,9 @@ import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class ProductDTO {
@@ -12,4 +15,5 @@ public class ProductDTO {
     private String description;
     private String image;
     private Double price;
+    private LocalDate birthday;
 }
