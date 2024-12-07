@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/member")
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class MemberController {
     @Autowired
     private IMembersServices mS;

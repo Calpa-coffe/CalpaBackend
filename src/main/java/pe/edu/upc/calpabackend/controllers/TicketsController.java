@@ -21,6 +21,7 @@ import static pe.edu.upc.calpabackend.serviceimplements.PDFGenerator.generatePDF
 
 @RestController
 @RequestMapping("/tickets")
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class TicketsController {
     @Autowired
     private ITicketsServices tS;

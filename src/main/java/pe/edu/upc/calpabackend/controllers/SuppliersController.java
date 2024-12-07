@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/supplier")
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class SuppliersController {
     @Autowired
     private ISuppliersServices sS;

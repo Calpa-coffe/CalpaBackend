@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/bookings")
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class BookingsController {
     @Autowired
     private IBookingsServices bS;

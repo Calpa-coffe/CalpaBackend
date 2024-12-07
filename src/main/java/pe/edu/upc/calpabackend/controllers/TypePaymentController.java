@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/typepayment")
+@CrossOrigin(origins = {"http://localhost:4200"})
 public class TypePaymentController {
     @Autowired
     private ITypePaymentServices tyS;

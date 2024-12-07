@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/User")
+@CrossOrigin(origins = {"http://localhost:4200" /*tambien puedes añadr mas*/ }, allowedHeaders = "*", allowCredentials = "true")
 public class UsersController {
     @Autowired
     private IUsersServices uS;
@@ -36,7 +37,7 @@ public class UsersController {
     }
 
     @GetMapping //listar
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public List<UsersDTO> list(){
         return uS.list().stream().map(y->{
             ModelMapper m = new ModelMapper();
