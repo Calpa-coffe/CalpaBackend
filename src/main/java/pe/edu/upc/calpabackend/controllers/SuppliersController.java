@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.calpabackend.dtos.ProductDTO;
+import pe.edu.upc.calpabackend.dtos.RolesDTO;
 import pe.edu.upc.calpabackend.dtos.SuppliersDTO;
 import pe.edu.upc.calpabackend.entities.Products;
 import pe.edu.upc.calpabackend.entities.Suppliers;
@@ -46,4 +47,12 @@ public class SuppliersController {
     public void eliminar(@PathVariable("id") Integer id){
         sS.delete(id);
     }
+
+    @GetMapping("/{id}")
+    public SuppliersDTO listarId(@PathVariable("id") int id) {
+        ModelMapper m = new ModelMapper();
+        SuppliersDTO dto = m.map(sS.listarId(id), SuppliersDTO.class);
+        return dto;
+    }
+
 }

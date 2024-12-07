@@ -46,4 +46,12 @@ public class MemberController {
     public void eliminar(@PathVariable("id") Integer id){
         mS.delete(id);
     }
+
+    @GetMapping("/{id}")
+    public MemberDTO listarId(@PathVariable("id") int id) {
+        ModelMapper m = new ModelMapper();
+        MemberDTO dto = m.map(mS.listarId(id), MemberDTO.class);
+        return dto;
+    }
+
 }

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/attendances")
 public class AttendancesController {
     @Autowired
@@ -45,4 +44,10 @@ public class AttendancesController {
         aS.delete(id);
     }
 
+    @GetMapping("/{id}")
+    public AttendancesDTO listarId(@PathVariable("id") int id) {
+        ModelMapper m = new ModelMapper();
+        AttendancesDTO dto = m.map(aS.listarId(id), AttendancesDTO.class);
+        return dto;
+    }
 }

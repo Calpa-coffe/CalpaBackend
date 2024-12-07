@@ -47,4 +47,11 @@ public class BookingsController {
         bS.delete(id);
     }
 
+    @GetMapping("/{id}")
+    public BookingsDTO listarId(@PathVariable("id") int id) {
+        ModelMapper m = new ModelMapper();
+        BookingsDTO dto = m.map(bS.listarId(id), BookingsDTO.class);
+        return dto;
+    }
+
 }

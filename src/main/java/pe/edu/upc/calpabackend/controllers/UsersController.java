@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.upc.calpabackend.dtos.TypePaymentsDTO;
 import pe.edu.upc.calpabackend.dtos.UsersDTO;
 import pe.edu.upc.calpabackend.entities.Users;
 import pe.edu.upc.calpabackend.serviceinterfaces.IUsersServices;
@@ -58,4 +59,11 @@ public class UsersController {
         uS.delete(id);
     }
 
+    @GetMapping("/{id}")
+    public UsersDTO listarId(@PathVariable("id") Long id) {
+        ModelMapper m = new ModelMapper();
+        UsersDTO dto = m.map(uS.listarId(id), UsersDTO.class);
+        return dto;
+    }
+    
 }

@@ -46,4 +46,11 @@ public class DetailSupplierController {
     public void eliminar(@PathVariable("id") Integer id){
         dS.delete(id);
     }
+
+    @GetMapping("/{id}")
+    public DetailSupplierDTO listarId(@PathVariable("id") int id) {
+        ModelMapper m = new ModelMapper();
+        DetailSupplierDTO dto = m.map(dS.listarId(id), DetailSupplierDTO.class);
+        return dto;
+    }
 }

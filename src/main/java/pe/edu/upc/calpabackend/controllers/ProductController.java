@@ -46,4 +46,12 @@ public class ProductController {
     public void eliminar(@PathVariable("id") Integer id){
         pS.delete(id);
     }
+
+    @GetMapping("/{id}")
+    public ProductDTO listarId(@PathVariable("id") int id) {
+        ModelMapper m = new ModelMapper();
+        ProductDTO dto = m.map(pS.listarId(id), ProductDTO.class);
+        return dto;
+    }
+
 }

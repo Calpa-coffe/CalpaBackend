@@ -72,7 +72,12 @@ public class TicketsController {
         outputStream.flush();
     }
 
-
+    @GetMapping("/{id}")
+    public TicketsDTO listarId(@PathVariable("id") int id) {
+        ModelMapper m = new ModelMapper();
+        TicketsDTO dto = m.map(tS.listarId(id), TicketsDTO.class);
+        return dto;
+    }
 
 
 }

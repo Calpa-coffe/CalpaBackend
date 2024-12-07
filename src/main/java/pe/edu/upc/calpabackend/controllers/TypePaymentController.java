@@ -47,4 +47,11 @@ public class TypePaymentController {
         tyS.delete(id);
     }
 
+    @GetMapping("/{id}")
+    public TypePaymentsDTO listarId(@PathVariable("id") int id) {
+        ModelMapper m = new ModelMapper();
+        TypePaymentsDTO dto = m.map(tyS.listarId(id), TypePaymentsDTO.class);
+        return dto;
+    }
+
 }
