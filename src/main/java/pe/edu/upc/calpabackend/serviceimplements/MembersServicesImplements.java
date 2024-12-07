@@ -14,8 +14,8 @@ public class MembersServicesImplements implements IMembersServices {
     private IMembersRepository mR;
 
     @Override
-    public Members insert(Members members) {
-        return mR.save(members);
+    public void insert(Members members) {
+         mR.save(members);
     }
 
     @Override

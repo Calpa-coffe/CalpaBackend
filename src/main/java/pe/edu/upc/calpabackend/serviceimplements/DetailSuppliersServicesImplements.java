@@ -15,8 +15,8 @@ public class DetailSuppliersServicesImplements implements IDetailSuppliersServic
     private IDetailSuppliersRepository dR;
 
     @Override
-    public DetailSuppliers insert(DetailSuppliers detailSuppliers) {
-        return dR.save(detailSuppliers);
+    public void insert(DetailSuppliers detailSuppliers) {
+         dR.save(detailSuppliers);
     }
 
     @Override

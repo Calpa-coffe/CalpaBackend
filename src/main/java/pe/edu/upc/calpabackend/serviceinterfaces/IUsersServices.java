@@ -1,6 +1,5 @@
 package pe.edu.upc.calpabackend.serviceinterfaces;
 
-import pe.edu.upc.calpabackend.entities.TypePayments;
 import pe.edu.upc.calpabackend.entities.Users;
 
 import java.util.List;

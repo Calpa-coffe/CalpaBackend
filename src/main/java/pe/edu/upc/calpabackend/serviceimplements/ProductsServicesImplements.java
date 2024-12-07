@@ -15,8 +15,8 @@ public class ProductsServicesImplements implements IProductServices {
     private IProductsRepository pR;
 
     @Override
-    public Products insert(Products product) {
-        return pR.save(product);
+    public void insert(Products product) {
+         pR.save(product);
     }
 
     @Override

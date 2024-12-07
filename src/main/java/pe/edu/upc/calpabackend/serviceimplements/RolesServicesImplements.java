@@ -16,8 +16,8 @@ public class RolesServicesImplements implements IRolesServices {
     private IRolesRepository rR;
 
     @Override
-    public Roles insert(Roles roles) {
-        return rR.save(roles);
+    public void insert(Roles roles) {
+         rR.save(roles);
     }
 
     @Override

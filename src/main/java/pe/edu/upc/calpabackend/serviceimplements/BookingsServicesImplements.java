@@ -14,8 +14,8 @@ public class BookingsServicesImplements implements IBookingsServices {
     private IBookingsRepository bR;
 
     @Override
-    public Bookings insert(Bookings bookings) {
-        return bR.save(bookings);
+    public void insert(Bookings bookings) {
+        bR.save(bookings);
     }
 
     @Override

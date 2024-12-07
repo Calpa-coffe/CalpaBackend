@@ -15,8 +15,8 @@ public class AttendanceServicesImplements implements IAttendancesServices {
     private IAttendancesRepository aR;
 
     @Override
-    public Attendances insert(Attendances attendances) {
-        return aR.save(attendances);
+    public void insert(Attendances attendances) {
+         aR.save(attendances);
     }
 
     @Override

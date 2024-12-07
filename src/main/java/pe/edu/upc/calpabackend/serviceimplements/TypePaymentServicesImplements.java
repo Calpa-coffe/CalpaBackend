@@ -15,8 +15,8 @@ public class TypePaymentServicesImplements implements ITypePaymentServices {
     private ITypePaymentsRepository tR;
 
     @Override
-    public TypePayments insert(TypePayments typePayments) {
-        return tR.save(typePayments);
+    public void insert(TypePayments typePayments) {
+        tR.save(typePayments);
     }
 
     @Override

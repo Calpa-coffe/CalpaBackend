@@ -16,8 +16,8 @@ public class SuppliersServicesImplements implements ISuppliersServices {
     private ISuppliersRepository sR;
 
     @Override
-    public Suppliers insert(Suppliers suppliers) {
-        return sR.save(suppliers);
+    public void insert(Suppliers suppliers) {
+         sR.save(suppliers);
     }
 
     @Override
