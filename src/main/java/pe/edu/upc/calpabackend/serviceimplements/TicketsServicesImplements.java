@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.edu.upc.calpabackend.entities.Products;
+import pe.edu.upc.calpabackend.entities.TypePayments;
 import pe.edu.upc.calpabackend.exception.ResourceNotFoundException;
 import pe.edu.upc.calpabackend.dtos.TicketsDTO;
 import pe.edu.upc.calpabackend.entities.Tickets;
@@ -51,6 +52,11 @@ public class TicketsServicesImplements implements ITicketsServices {
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found with id: " + id));
         // Mapear entidad a DTO
         return modelMapper.map(ticket, TicketsDTO.class);
+    }
+
+    @Override
+    public Tickets listarId(int id) {
+        return iR.findById(id).orElse(new Tickets());
     }
 
 
