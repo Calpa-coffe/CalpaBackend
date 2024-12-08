@@ -61,4 +61,9 @@ public class UsersServicesImplements implements IUsersServices {
     public Users listarId(Long id) {
         return uR.findById(id).orElse(new Users());
     }
+
+    @Override
+    public Users finduser(String username) {
+        return uR.findByUsername(username);
+    }
 }

@@ -10,5 +10,6 @@ public interface IUsersServices {
     public void delete(Long id);
     public void update(Users user);
     public Users listarId(Long id);
+    public Users finduser(String username);
 
 }
