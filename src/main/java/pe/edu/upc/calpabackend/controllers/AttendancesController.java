@@ -1,12 +1,15 @@
 package pe.edu.upc.calpabackend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.upc.calpabackend.dtos.AttendancesByYearDTO;
 import pe.edu.upc.calpabackend.dtos.AttendancesDTO;
 import pe.edu.upc.calpabackend.entities.Attendances;
 import pe.edu.upc.calpabackend.serviceinterfaces.IAttendancesServices;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,4 +53,20 @@ public class AttendancesController {
         AttendancesDTO dto = m.map(aS.listarId(id), AttendancesDTO.class);
         return dto;
     }
+
+    @GetMapping("/attendancesyear")
+    public List<AttendancesByYearDTO> cantidadIncidentesPorMes(@RequestParam int anio){
+        List<String[]> filaLista = aS.getAttendancesByYear(anio);
+        List<AttendancesByYearDTO> dtoLista = new ArrayList<>();
+        for(String[] columna: filaLista){
+            AttendancesByYearDTO dto = new AttendancesByYearDTO();
+            dto.setVendedor(columna[0]);
+            dto.setAnio(Double.valueOf(columna[1]));
+            dto.setMes(Double.valueOf(columna[2]));
+            dto.setTotal_asistencias(Integer.parseInt(columna[3]));
+            dtoLista.add(dto);
+        }
+        return dtoLista;
+    }
+
 }

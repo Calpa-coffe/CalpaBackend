@@ -38,4 +38,9 @@ public class AttendanceServicesImplements implements IAttendancesServices {
     public Attendances listarId(int id) {
         return aR.findById(id).orElse(new Attendances());
     }
+
+    @Override
+    public List<String[]> getAttendancesByYear(int anio) {
+        return aR.getAttendancesByYear(anio);
+    }
 }
