@@ -11,6 +11,7 @@ import pe.edu.upc.calpabackend.serviceinterfaces.ITicketsServices;
 
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static pe.edu.upc.calpabackend.serviceimplements.PDFGenerator.generatePDF;
@@ -26,13 +27,18 @@ public class TicketsController {
     private ModelMapper modelMapper;
 
     @PostMapping("/Registro") //registrar
-    public ResponseEntity<String> registrar(@RequestBody TicketsDTO a) {
-
+    public ResponseEntity<Object> registrar(@RequestBody TicketsDTO a) {
         ModelMapper m = new ModelMapper();
         Tickets ch = m.map(a, Tickets.class);
         tS.insert(ch);
-        return ResponseEntity.ok("Ticket registrado exitosamente");
+
+        // Devuelve un objeto JSON en lugar de texto plano
+        return ResponseEntity.ok().body(Map.of(
+                "message", "Ticket registrado exitosamente",
+                "id", ch.getId()
+        ));
     }
+
 
     @GetMapping //listar
     public List<TicketsDTO> list() {
