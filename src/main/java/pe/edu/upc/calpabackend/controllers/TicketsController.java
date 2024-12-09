@@ -5,11 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.calpabackend.dtos.SuppliersDTO;
 import pe.edu.upc.calpabackend.dtos.TicketsDTO;
-import pe.edu.upc.calpabackend.entities.Suppliers;
 import pe.edu.upc.calpabackend.entities.Tickets;
-import pe.edu.upc.calpabackend.exception.ResourceNotFoundException;
 import pe.edu.upc.calpabackend.serviceinterfaces.ITicketsServices;
 
 import java.io.OutputStream;
@@ -25,12 +22,16 @@ import static pe.edu.upc.calpabackend.serviceimplements.PDFGenerator.generatePDF
 public class TicketsController {
     @Autowired
     private ITicketsServices tS;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping("/Registro") //registrar
-    public void registrar(@RequestBody TicketsDTO a) {
+    public ResponseEntity<String> registrar(@RequestBody TicketsDTO a) {
+
         ModelMapper m = new ModelMapper();
         Tickets ch = m.map(a, Tickets.class);
         tS.insert(ch);
+        return ResponseEntity.ok("Ticket registrado exitosamente");
     }
 
     @GetMapping //listar
