@@ -127,10 +127,16 @@ public class PDFGenerator {
         productTable.setWidthPercentage(100);
         productTable.setWidths(new float[]{10, 50, 20, 20});
 
+        // Agregar encabezados
+        productTable.addCell(createHeaderCell("Cantidad"));
+        productTable.addCell(createHeaderCell("Descripción"));
+        productTable.addCell(createHeaderCell("P/U"));
+        productTable.addCell(createHeaderCell("Total"));
+
         // Iterar sobre los productos
         for (ProductDTO product : ticketDTO.getProduct()) {
-            int quantity = ticketDTO.getQuantity(); // Obtener cantidad del producto
-            double price = product.getPrice();   // Obtener precio unitario
+            int quantity = ticketDTO.getQuantity(); // Cantidad total viene calculada
+            double price = product.getPrice();
 
             productTable.addCell(createCell(String.valueOf(quantity), false));
             productTable.addCell(createCell(product.getNameproduct(), false));
@@ -140,6 +146,9 @@ public class PDFGenerator {
 
         document.add(productTable);
     }
+
+
+
 
 
     private static void addTotals(Document document, TicketsDTO ticketDTO) throws DocumentException {
