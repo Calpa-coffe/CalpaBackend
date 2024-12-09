@@ -11,11 +11,9 @@ import pe.edu.upc.calpabackend.serviceinterfaces.ITicketsServices;
 
 import java.io.OutputStream;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static pe.edu.upc.calpabackend.serviceimplements.PDFGenerator.generatePDF;
-
 
 @RestController
 @RequestMapping("/tickets")
@@ -23,29 +21,21 @@ import static pe.edu.upc.calpabackend.serviceimplements.PDFGenerator.generatePDF
 public class TicketsController {
     @Autowired
     private ITicketsServices tS;
-    @Autowired
-    private ModelMapper modelMapper;
 
-    @PostMapping("/Registro") //registrar
-    public ResponseEntity<Object> registrar(@RequestBody TicketsDTO a) {
+    @PostMapping("/Registro")
+    public ResponseEntity<Tickets> registrar(@RequestBody TicketsDTO a) {
         ModelMapper m = new ModelMapper();
         Tickets ch = m.map(a, Tickets.class);
-        tS.insert(ch);
-
-        // Devuelve un objeto JSON en lugar de texto plano
-        return ResponseEntity.ok().body(Map.of(
-                "message", "Ticket registrado exitosamente",
-                "id", ch.getId()
-        ));
+        Tickets createdTicket = tS.insert(ch);
+        return ResponseEntity.ok(createdTicket); // Devolver el ticket creado con su ID
     }
-
 
     @GetMapping //listar
     public List<TicketsDTO> list() {
         return tS.list().stream().map(y -> {
             ModelMapper m = new ModelMapper();
             return m.map(y, TicketsDTO.class); //expresion lambda para la transformacion
-        }).collect(Collectors.toList()); //lista de tipo Shoe
+        }).collect(Collectors.toList()); //lista de tipo TicketDTO
     }
 
     @PutMapping("/{id}") // actualizar
@@ -68,16 +58,24 @@ public class TicketsController {
     }
 
     @GetMapping("/{id}/download")
-    public void downloadTicket(@PathVariable Integer id, HttpServletResponse response) throws Exception {
-        TicketsDTO ticketDTO = tS.getTicketById(id);
+    public ResponseEntity<?> downloadTicket(@PathVariable Integer id, HttpServletResponse response) {
+        try {
+            TicketsDTO ticketDTO = tS.getTicketById(id);
+            if (ticketDTO == null) {
+                return ResponseEntity.status(404).body("Ticket no encontrado con ID: " + id);
+            }
 
-        response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=boleta_" + id + ".pdf");
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "attachment; filename=boleta_" + id + ".pdf");
 
-        OutputStream outputStream = response.getOutputStream();
-        generatePDF(ticketDTO, outputStream);
-        outputStream.flush();
+            try (OutputStream outputStream = response.getOutputStream()) {
+                generatePDF(ticketDTO, outputStream);
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al generar o descargar el PDF: " + e.getMessage());
+        }
     }
-
 
 }

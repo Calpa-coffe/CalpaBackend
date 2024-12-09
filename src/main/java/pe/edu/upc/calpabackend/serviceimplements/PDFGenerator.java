@@ -7,8 +7,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import pe.edu.upc.calpabackend.dtos.ProductDTO;
 import pe.edu.upc.calpabackend.dtos.TicketsDTO;
+import pe.edu.upc.calpabackend.dtos.TicketProductDTO;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -18,66 +18,52 @@ import java.io.OutputStream;
 public class PDFGenerator {
 
     public static void generatePDF(TicketsDTO ticketDTO, OutputStream outputStream) throws Exception {
-        // Definir tamaño del ticket
-        Rectangle ticketSize = new Rectangle(227, 700); // Ajustar el tamaño para incluir todos los elementos
+        Rectangle ticketSize = new Rectangle(227, 700);
         Document document = new Document(ticketSize, 10, 10, 10, 10);
         PdfWriter.getInstance(document, outputStream);
         document.open();
 
         // Logo
-        String imagePath = "src/main/resources/img/logo.jpg"; // Ruta del logo
         try {
+            String imagePath = PDFGenerator.class.getClassLoader().getResource("img/logo.jpg").getPath();
             Image logo = Image.getInstance(imagePath);
             logo.scaleToFit(100, 100);
             logo.setAlignment(Element.ALIGN_CENTER);
             document.add(logo);
         } catch (Exception e) {
-            System.out.println("No se encontró el logo: " + e.getMessage());
+            System.err.println("Error cargando el logo: " + e.getMessage());
         }
 
         // Información de la empresa
         addCompanyInfo(document);
 
-        // Título de la boleta
-        Paragraph title = new Paragraph("BOLETA DE VENTA ELECTRÓNICA",
-                FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12));
-        title.setAlignment(Element.ALIGN_CENTER);
-        title.setSpacingAfter(5);
-        document.add(title);
+        // Validar ticketDTO
+        if (ticketDTO == null) {
+            throw new IllegalArgumentException("Datos del ticket no válidos.");
+        }
 
-        // Número de boleta
-        Paragraph boletaNumber = new Paragraph("BBB1-" + ticketDTO.getId(),
-                FontFactory.getFont(FontFactory.HELVETICA, 10));
-        boletaNumber.setAlignment(Element.ALIGN_CENTER);
-        boletaNumber.setSpacingAfter(10);
-        document.add(boletaNumber);
-
-        // Información del cliente
+        // Título, cliente, detalles del pago y productos
         addClientInfo(document, ticketDTO);
-
-        // Detalles del pago
         addPaymentDetails(document, ticketDTO);
-
-        // Tabla de productos
         addProductTable(document, ticketDTO);
-
-        // Totales
         addTotals(document, ticketDTO);
-
-        // Información adicional (vuelto)
         addAdditionalInfo(document, ticketDTO);
 
-        // Generar QR
-        String qrContent = generateQRContent(ticketDTO);
-        Image qrImage = generateQRCodeImage(qrContent, 100, 100);
-        if (qrImage != null) {
-            qrImage.setAlignment(Element.ALIGN_CENTER);
-            qrImage.setSpacingBefore(20);
-            document.add(qrImage);
+        // QR
+        try {
+            String qrContent = generateQRContent(ticketDTO);
+            Image qrImage = generateQRCodeImage(qrContent, 100, 100);
+            if (qrImage != null) {
+                qrImage.setAlignment(Element.ALIGN_CENTER);
+                document.add(qrImage);
+            }
+        } catch (Exception e) {
+            System.err.println("Error generando el QR: " + e.getMessage());
         }
 
         document.close();
     }
+
 
     private static void addCompanyInfo(Document document) throws DocumentException {
         Paragraph companyInfo = new Paragraph("Calpa E.I.R.L \nAv. San German, calle 3",
@@ -134,22 +120,27 @@ public class PDFGenerator {
         productTable.addCell(createHeaderCell("Total"));
 
         // Iterar sobre los productos
-        for (ProductDTO product : ticketDTO.getProduct()) {
-            int quantity = ticketDTO.getQuantity(); // Cantidad total viene calculada
-            double price = product.getPrice();
+        if (ticketDTO.getTicketProducts() != null && !ticketDTO.getTicketProducts().isEmpty()) {
+            for (TicketProductDTO tp : ticketDTO.getTicketProducts()) {
+                int quantity = tp.getQuantity();
+                double price = tp.getProduct().getPrice();
 
-            productTable.addCell(createCell(String.valueOf(quantity), false));
-            productTable.addCell(createCell(product.getNameproduct(), false));
-            productTable.addCell(createCell("S/ " + String.format("%.2f", price), false));
-            productTable.addCell(createCell("S/ " + String.format("%.2f", quantity * price), false));
+                productTable.addCell(createCell(String.valueOf(quantity), false));
+                productTable.addCell(createCell(tp.getProduct().getNameproduct(), false));
+                productTable.addCell(createCell("S/ " + String.format("%.2f", price), false));
+                productTable.addCell(createCell("S/ " + String.format("%.2f", price * quantity), false));
+            }
+        } else {
+            // Si no hay productos, mostrar una fila indicando que no hay productos
+            PdfPCell noDataCell = new PdfPCell(new Phrase("No hay productos seleccionados"));
+            noDataCell.setColspan(4);
+            noDataCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            noDataCell.setPadding(10);
+            productTable.addCell(noDataCell);
         }
 
         document.add(productTable);
     }
-
-
-
-
 
     private static void addTotals(Document document, TicketsDTO ticketDTO) throws DocumentException {
         double IGV = ticketDTO.getTotal() * 0.18;
@@ -173,11 +164,11 @@ public class PDFGenerator {
         double turned = ticketDTO.getAmountpayment() - ticketDTO.getTotal();
 
         // Mostrar monto pagado
-        Paragraph paymentquantity = new Paragraph("Pagó con: S/ " + String.format("%.2f", ticketDTO.getAmountpayment()),
+        Paragraph paymentQuantity = new Paragraph("Pagó con: S/ " + String.format("%.2f", ticketDTO.getAmountpayment()),
                 FontFactory.getFont(FontFactory.HELVETICA, 8));
-        paymentquantity.setAlignment(Element.ALIGN_LEFT);
-        paymentquantity.setSpacingBefore(10);
-        document.add(paymentquantity);
+        paymentQuantity.setAlignment(Element.ALIGN_LEFT);
+        paymentQuantity.setSpacingBefore(10);
+        document.add(paymentQuantity);
 
         // Condicional para mostrar vuelto o saldo insuficiente
         if (turned < 0) {
@@ -195,11 +186,13 @@ public class PDFGenerator {
         }
     }
 
-
     private static String generateQRContent(TicketsDTO ticketDTO) {
-        return "Boleta: BBB1-" + ticketDTO.getId() + "\n" +
-                "Cliente: " + (ticketDTO.getClientname() != null ? ticketDTO.getClientname() : "N/A") + "\n" +
-                "Total: S/ " + String.format("%.2f", ticketDTO.getTotal());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Boleta: BBB1-").append(ticketDTO.getId()).append("\n")
+                .append("Cliente: ").append(ticketDTO.getClientname() != null ? ticketDTO.getClientname() : "N/A").append("\n")
+                .append("Total: S/ ").append(String.format("%.2f", ticketDTO.getTotal()));
+
+        return sb.toString();
     }
 
     private static Image generateQRCodeImage(String text, int width, int height) throws Exception {
