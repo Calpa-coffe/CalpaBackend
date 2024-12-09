@@ -26,31 +26,23 @@ public class TicketsServicesImplements implements ITicketsServices {
 
     @Override
     public Tickets insert(Tickets tickets) {
-        // Verificar si users es nulo
-        if (tickets.getUsers() == null) {
-            System.out.println("Se recibió parámetro nulo de user.");
+        // Validar usuario
+        if (tickets.getUsers() == null || tickets.getUsers().getId() <= 0) {
             throw new ResourceNotFoundException("Usuario no proporcionado o inválido");
-        } else {
-            System.out.println("Parámetro recibido, userID: " + tickets.getUsers().getId());
-            if (tickets.getUsers().getId() <= 0) {
-                throw new ResourceNotFoundException("Usuario no proporcionado o inválido");
-            }
         }
 
-        // Verificar el tipo de pago
+        // Validar tipo de pago
         if (tickets.getTypepayments() == null || tickets.getTypepayments().getId() <= 0) {
-            System.out.println("Tipo de pago recibido: " + tickets.getTypepayments());
             throw new ResourceNotFoundException("Tipo de pago no proporcionado o inválido");
         }
 
-        // Buscar el objeto TypePayments desde la base de datos
+        // Buscar tipo de pago desde la base de datos
         TypePayments typePayment = iT.findById(tickets.getTypepayments().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Tipo de pago no encontrado"));
 
-        // Asociar el objeto TypePayments con el ticket
         tickets.setTypepayments(typePayment);
 
-        // Calcular el total en base a productos y cantidad
+        // Validar que los productos tengan cantidades y calcular el total
         double total = 0.0;
         if (tickets.getProduct() != null) {
             for (Products product : tickets.getProduct()) {
@@ -59,7 +51,12 @@ public class TicketsServicesImplements implements ITicketsServices {
         }
         tickets.setTotal(total);
 
-        // Guardar el ticket y devolverlo
+        // Si no hay miembro asociado, solo guarda el nombre del cliente
+        if (tickets.getMembers() == null) {
+            tickets.setMembers(null);
+        }
+
+        // Guardar ticket
         return iR.save(tickets);
     }
 
