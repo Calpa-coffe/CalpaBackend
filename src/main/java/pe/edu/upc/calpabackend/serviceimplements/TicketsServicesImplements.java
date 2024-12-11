@@ -15,6 +15,7 @@ import pe.edu.upc.calpabackend.repositories.IProductsRepository;
 import pe.edu.upc.calpabackend.repositories.ITicketProductRepository;
 import pe.edu.upc.calpabackend.serviceinterfaces.ITicketsServices;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -115,5 +116,10 @@ public class TicketsServicesImplements implements ITicketsServices {
     @Override
     public Tickets listarId(int id) {
         return iR.findById(id).orElse(new Tickets());
+    }
+
+    @Override
+    public List<String[]> getTicketsByDatepay(LocalDate findDate, String username) {
+        return iR.getTicketsByDatepay(findDate, username);
     }
 }

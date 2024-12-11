@@ -6,6 +6,7 @@ import pe.edu.upc.calpabackend.entities.Attendances;
 import pe.edu.upc.calpabackend.repositories.IAttendancesRepository;
 import pe.edu.upc.calpabackend.serviceinterfaces.IAttendancesServices;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -40,7 +41,9 @@ public class AttendanceServicesImplements implements IAttendancesServices {
     }
 
     @Override
-    public List<String[]> getAttendancesByYear(int anio) {
-        return aR.getAttendancesByYear(anio);
+    public List<String[]> getAttendancesByYear(LocalDate startDate, LocalDate endDate) {
+        return aR.getAttendancesByYear(startDate, endDate);
     }
+
+
 }

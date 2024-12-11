@@ -6,10 +6,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import pe.edu.upc.calpabackend.entities.Attendances;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface IAttendancesRepository extends JpaRepository<Attendances, Integer> {
+
     @Query(value = "SELECT " +
             "ut.username AS vendedor, " +
             "DATE_PART('year', att.dateStarting) AS anio, " +
@@ -23,13 +25,17 @@ public interface IAttendancesRepository extends JpaRepository<Attendances, Integ
             "att.user_id = ut.id " +
             "WHERE " +
             "att.attendance = TRUE AND " +
-            "DATE_PART('year', att.dateStarting) = :anio " +
+            "att.dateStarting >= :startDate AND " +
+            "att.dateStarting < :endDate " +
             "GROUP BY " +
             "ut.username, DATE_PART('year', att.dateStarting), DATE_PART('month', att.dateStarting) " +
             "ORDER BY " +
             "ut.username, anio, mes ",
             nativeQuery = true)
-    public List<String[]> getAttendancesByYear(@Param("anio") int anio);
+    public List<String[]> getAttendancesByYear(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
 
 
 

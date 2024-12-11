@@ -9,6 +9,7 @@ import pe.edu.upc.calpabackend.entities.Attendances;
 import pe.edu.upc.calpabackend.serviceinterfaces.IAttendancesServices;
 import org.modelmapper.ModelMapper;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,8 +56,8 @@ public class AttendancesController {
     }
 
     @GetMapping("/attendancesyear")
-    public List<AttendancesByYearDTO> cantidadIncidentesPorMes(@RequestParam int anio){
-        List<String[]> filaLista = aS.getAttendancesByYear(anio);
+    public List<AttendancesByYearDTO> cantidadIncidentesPorMes(@RequestParam LocalDate startDate, LocalDate endDate){
+        List<String[]> filaLista = aS.getAttendancesByYear(startDate, endDate);
         List<AttendancesByYearDTO> dtoLista = new ArrayList<>();
         for(String[] columna: filaLista){
             AttendancesByYearDTO dto = new AttendancesByYearDTO();

@@ -5,11 +5,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.upc.calpabackend.dtos.AttendancesByYearDTO;
+import pe.edu.upc.calpabackend.dtos.TicketsByDTO;
 import pe.edu.upc.calpabackend.dtos.TicketsDTO;
 import pe.edu.upc.calpabackend.entities.Tickets;
 import pe.edu.upc.calpabackend.serviceinterfaces.ITicketsServices;
 
 import java.io.OutputStream;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,6 +60,22 @@ public class TicketsController {
         TicketsDTO ticketDTO = tS.getTicketById(id);
         return ResponseEntity.ok(ticketDTO);
     }
+
+    @GetMapping("/ticketsByDatePay")
+    public List<TicketsByDTO> ticketsByDatePay(
+            @RequestParam("findDate") LocalDate findDate,
+            @RequestParam("username") String username) {
+        List<String[]> filaLista = tS.getTicketsByDatepay(findDate, username);
+        List<TicketsByDTO> dtoLista = new ArrayList<>();
+        for (String[] columna : filaLista) {
+            TicketsByDTO dto = new TicketsByDTO();
+            dto.setTotal(Double.valueOf(columna[0]));
+            dto.setDatepay((columna[1]));
+            dtoLista.add(dto);
+        }
+        return dtoLista;
+    }
+
 
     @GetMapping("/{id}/download")
     public ResponseEntity<?> downloadTicket(@PathVariable Integer id, HttpServletResponse response) {

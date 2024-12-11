@@ -3,6 +3,7 @@ package pe.edu.upc.calpabackend.serviceinterfaces;
 import org.springframework.data.repository.query.Param;
 import pe.edu.upc.calpabackend.entities.Attendances;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IAttendancesServices {
@@ -11,6 +12,7 @@ public interface IAttendancesServices {
     public void delete(int id);
     public void update(Attendances attendances);
     public Attendances listarId(int id);
-    public List<String[]> getAttendancesByYear(@Param("anio") int anio);
+    public List<String[]> getAttendancesByYear(LocalDate startDate,
+                                               LocalDate endDate);
 
 }
