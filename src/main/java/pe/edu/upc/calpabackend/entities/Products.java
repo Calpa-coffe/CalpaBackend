@@ -25,4 +25,8 @@ public class Products {
     @Column(name = "price", nullable = false, length = 10)
     private Double price;
 
+    @ManyToOne
+    @JoinColumn(name = "categoryproduct_id", nullable = false)
+    private CategoryProduct categoryProduct;
+
 }
