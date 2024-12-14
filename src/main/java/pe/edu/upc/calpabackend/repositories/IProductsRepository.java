@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface IProductsRepository extends JpaRepository<Products, Integer> {
-    @Query(value = "SELECT p.nameproduct, p.description, p.image, p.price FROM products p\n" +
+    @Query(value = "SELECT p.id, p.nameproduct, p.description, p.image, p.price FROM products p\n" +
             "JOIN categoryproduct c ON p.categoryproduct_id = c.id WHERE c.category = :typecategory;", nativeQuery = true)
     public List<String[]> getProductsByCategoryProduct (@Param("typecategory") String typecategory);
 }

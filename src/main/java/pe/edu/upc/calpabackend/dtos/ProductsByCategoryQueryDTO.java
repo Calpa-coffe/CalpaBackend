@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ProductsByCategoryQueryDTO {
+    private int id;
     private String nameproduct;
     private String description;
     private String image;

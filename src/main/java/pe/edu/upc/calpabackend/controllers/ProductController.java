@@ -61,15 +61,16 @@ public class ProductController {
     }
 
     @GetMapping("/productsByCategory")
-    public List<ProductsByCategoryQueryDTO> productsByCategory(@RequestParam String typecategory){
+    public List<ProductDTO> productsByCategory(@RequestParam String typecategory){
         List<String[]> filaLista = pS.getProductsByCategoryProduct(typecategory);
-        List<ProductsByCategoryQueryDTO> dtoLista = new ArrayList<>();
+        List<ProductDTO> dtoLista = new ArrayList<>();
         for(String[] columna: filaLista){
-            ProductsByCategoryQueryDTO dto = new ProductsByCategoryQueryDTO();
-            dto.setNameproduct(columna[0]);
-            dto.setDescription((columna[1]));
-            dto.setImage((columna[2]));
-            dto.setPrice(Double.parseDouble(columna[3]));
+            ProductDTO dto = new ProductDTO();
+            dto.setId(Integer.parseInt(columna[0]));
+            dto.setNameproduct(columna[1]);
+            dto.setDescription((columna[2]));
+            dto.setImage((columna[3]));
+            dto.setPrice(Double.parseDouble(columna[4]));
             dtoLista.add(dto);
         }
         return dtoLista;
