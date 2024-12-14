@@ -38,4 +38,9 @@ public class ProductsServicesImplements implements IProductServices {
     public Products listarId(int id) {
         return pR.findById(id).orElse(new Products());
     }
+
+    @Override
+    public List<String[]> getProductsByCategoryProduct(String typecategory) {
+        return pR.getProductsByCategoryProduct(typecategory);
+    }
 }

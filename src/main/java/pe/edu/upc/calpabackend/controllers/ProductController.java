@@ -3,12 +3,16 @@ package pe.edu.upc.calpabackend.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.upc.calpabackend.dtos.AttendancesByYearDTO;
 import pe.edu.upc.calpabackend.dtos.MemberDTO;
 import pe.edu.upc.calpabackend.dtos.ProductDTO;
+import pe.edu.upc.calpabackend.dtos.ProductsByCategoryQueryDTO;
 import pe.edu.upc.calpabackend.entities.Members;
 import pe.edu.upc.calpabackend.entities.Products;
 import pe.edu.upc.calpabackend.serviceinterfaces.IProductServices;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +22,8 @@ import java.util.stream.Collectors;
 public class ProductController {
     @Autowired
     private IProductServices pS;
+
+
 
     @PostMapping("/Registro") //registrar
     public void registrar(@RequestBody ProductDTO a) {
@@ -52,6 +58,21 @@ public class ProductController {
         ModelMapper m = new ModelMapper();
         ProductDTO dto = m.map(pS.listarId(id), ProductDTO.class);
         return dto;
+    }
+
+    @GetMapping("/productsByCategory")
+    public List<ProductsByCategoryQueryDTO> productsByCategory(@RequestParam(name = "typecategory", required = false, defaultValue = "General") String typecategory){
+        List<String[]> filaLista = pS.getProductsByCategoryProduct(typecategory);
+        List<ProductsByCategoryQueryDTO> dtoLista = new ArrayList<>();
+        for(String[] columna: filaLista){
+            ProductsByCategoryQueryDTO dto = new ProductsByCategoryQueryDTO();
+            dto.setNameproduct(columna[0]);
+            dto.setDescription((columna[1]));
+            dto.setImage((columna[2]));
+            dto.setPrice(Double.parseDouble(columna[3]));
+            dtoLista.add(dto);
+        }
+        return dtoLista;
     }
 
 }

@@ -11,5 +11,5 @@ public interface IProductServices {
     public void delete(int id);
     public void update(Products product);
     public Products listarId(int id);
-
+    public List<String[]> getProductsByCategoryProduct (String typecategory);
 }
