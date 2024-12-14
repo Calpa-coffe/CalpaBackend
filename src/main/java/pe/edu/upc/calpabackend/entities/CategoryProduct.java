@@ -17,5 +17,5 @@ public class CategoryProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "category", nullable = false, length = 254)
-    private String nameproduct;
+    private String namecategory;
 }

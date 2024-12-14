@@ -3,6 +3,7 @@ package pe.edu.upc.calpabackend.dtos;
 import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
+import pe.edu.upc.calpabackend.entities.CategoryProduct;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,4 +16,5 @@ public class ProductDTO {
     private String description;
     private String image;
     private Double price;
+    private CategoryProduct categoryProduct;
 }

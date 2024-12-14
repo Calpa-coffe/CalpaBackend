@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 public class CategoryProductDTO {
     private int id;
-    private String nameproduct;
+    private String namecategory;
 }
