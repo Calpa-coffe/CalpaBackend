@@ -61,7 +61,7 @@ public class ProductController {
     }
 
     @GetMapping("/productsByCategory")
-    public List<ProductsByCategoryQueryDTO> productsByCategory(@RequestParam(name = "typecategory", required = false, defaultValue = "General") String typecategory){
+    public List<ProductsByCategoryQueryDTO> productsByCategory(@RequestParam String typecategory){
         List<String[]> filaLista = pS.getProductsByCategoryProduct(typecategory);
         List<ProductsByCategoryQueryDTO> dtoLista = new ArrayList<>();
         for(String[] columna: filaLista){
