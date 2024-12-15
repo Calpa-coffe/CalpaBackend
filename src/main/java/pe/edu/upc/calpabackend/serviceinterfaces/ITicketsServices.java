@@ -17,5 +17,7 @@ public interface ITicketsServices {
     TicketsDTO getTicketById(Integer id);
     public Tickets listarId(int id);
     public List<String[]> getTicketsByDatepay(LocalDate findDate, String username);
+    public List<String[]> getquantitypercategory(String categoryname, LocalDate startDate, LocalDate endDate);
+    public List<String[]> getmostproductsellcat(String categoryname, LocalDate startDate, LocalDate endDate);
 
 }

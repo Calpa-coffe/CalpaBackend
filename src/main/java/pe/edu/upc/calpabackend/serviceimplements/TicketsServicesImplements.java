@@ -122,4 +122,14 @@ public class TicketsServicesImplements implements ITicketsServices {
     public List<String[]> getTicketsByDatepay(LocalDate findDate, String username) {
         return iR.getTicketsByDatepay(findDate, username);
     }
+
+    @Override
+    public List<String[]> getquantitypercategory(String categoryname, LocalDate startDate, LocalDate endDate) {
+        return iR.getquantitypercategory(categoryname,startDate,endDate);
+    }
+
+    @Override
+    public List<String[]> getmostproductsellcat(String categoryname, LocalDate startDate, LocalDate endDate) {
+        return iR.getmostproductsellcat(categoryname, startDate, endDate);
+    }
 }

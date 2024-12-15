@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.calpabackend.dtos.AttendancesByYearDTO;
+import pe.edu.upc.calpabackend.dtos.QuantityProdCategoryDTO;
 import pe.edu.upc.calpabackend.dtos.TicketsByDTO;
 import pe.edu.upc.calpabackend.dtos.TicketsDTO;
 import pe.edu.upc.calpabackend.entities.Tickets;
@@ -71,6 +72,36 @@ public class TicketsController {
             TicketsByDTO dto = new TicketsByDTO();
             dto.setTotal(Double.valueOf(columna[0]));
             dto.setDatepay((columna[1]));
+            dtoLista.add(dto);
+        }
+        return dtoLista;
+    }
+
+    @GetMapping("/quantityprodcat")
+    public List<QuantityProdCategoryDTO> quantityprodcategory(@RequestParam("categoryname") String categoryname,
+                                                              @RequestParam("startDate") LocalDate startDate,
+                                                              @RequestParam("endDate") LocalDate endDate) {
+        List<String[]> filaLista = tS.getquantitypercategory(categoryname,startDate,endDate);
+        List<QuantityProdCategoryDTO> dtoLista = new ArrayList<>();
+        for (String[] columna : filaLista) {
+            QuantityProdCategoryDTO dto = new QuantityProdCategoryDTO();
+            dto.setNameproduct(columna[0]);
+            dto.setQuantity(Integer.parseInt(columna[1]));
+            dtoLista.add(dto);
+        }
+        return dtoLista;
+    }
+
+    @GetMapping("/mostquantityprodcat")
+    public List<QuantityProdCategoryDTO> mostquantityprodcategory(@RequestParam("categoryname") String categoryname,
+                                                                  @RequestParam("startDate") LocalDate startDate,
+                                                                  @RequestParam("endDate") LocalDate endDate) {
+        List<String[]> filaLista = tS.getmostproductsellcat(categoryname, startDate, endDate);
+        List<QuantityProdCategoryDTO> dtoLista = new ArrayList<>();
+        for (String[] columna : filaLista) {
+            QuantityProdCategoryDTO dto = new QuantityProdCategoryDTO();
+            dto.setNameproduct(columna[0]);
+            dto.setQuantity(Integer.parseInt(columna[1]));
             dtoLista.add(dto);
         }
         return dtoLista;

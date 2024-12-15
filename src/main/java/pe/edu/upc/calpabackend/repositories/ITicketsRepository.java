@@ -23,4 +23,32 @@ public interface ITicketsRepository extends JpaRepository<Tickets, Integer> {
             @Param("findDate") LocalDate findDate,
             @Param("username") String username);
 
+
+    @Query(value = "select pr.nameproduct, sum(quantity) as cantidad_total from ticket_products as tp \n" +
+            "inner join products as pr on tp.product_id = pr.id \n" +
+            "inner join categoryproduct as catp on pr.categoryproduct_id = catp.id \n" +
+            "inner join tickets as tc on tp.ticket_id = tc.id \n" +
+            "where catp.category = :categoryname \n" +
+            "and tc.datepay BETWEEN :startDate AND :endDate \n" +
+            "group by pr.nameproduct \n" +
+            "order by cantidad_total desc ", nativeQuery = true)
+    public List<String[]> getquantitypercategory(@Param("categoryname") String categoryname,
+                                                 @Param("startDate") LocalDate startDate,
+                                                 @Param("endDate") LocalDate endDate);
+
+
+    @Query(value = "select pr.nameproduct, sum(quantity) as cantidad_total from ticket_products as tp \n" +
+            "inner join products as pr on tp.product_id = pr.id \n" +
+            "inner join categoryproduct as catp on pr.categoryproduct_id = catp.id \n" +
+            "inner join tickets as tc on tp.ticket_id = tc.id \n" +
+            "where catp.category = :categoryname \n" +
+            "and tc.datepay BETWEEN :startDate AND :endDate \n" +
+            "group by pr.nameproduct \n" +
+            "order by cantidad_total desc \n" +
+            "limit 1 ", nativeQuery = true)
+    public List<String[]> getmostproductsellcat(@Param("categoryname") String categoryname,
+                                                 @Param("startDate") LocalDate startDate,
+                                                 @Param("endDate") LocalDate endDate);
+
+
 }
