@@ -3,6 +3,7 @@ package pe.edu.upc.calpabackend.controllers;
 import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.calpabackend.dtos.AttendancesByYearDTO;
@@ -79,8 +80,8 @@ public class TicketsController {
 
     @GetMapping("/quantityprodcat")
     public List<QuantityProdCategoryDTO> quantityprodcategory(@RequestParam("categoryname") String categoryname,
-                                                              @RequestParam("startDate") LocalDate startDate,
-                                                              @RequestParam("endDate") LocalDate endDate) {
+                                                              @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                                                              @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         List<String[]> filaLista = tS.getquantitypercategory(categoryname,startDate,endDate);
         List<QuantityProdCategoryDTO> dtoLista = new ArrayList<>();
         for (String[] columna : filaLista) {
@@ -94,8 +95,8 @@ public class TicketsController {
 
     @GetMapping("/mostquantityprodcat")
     public List<QuantityProdCategoryDTO> mostquantityprodcategory(@RequestParam("categoryname") String categoryname,
-                                                                  @RequestParam("startDate") LocalDate startDate,
-                                                                  @RequestParam("endDate") LocalDate endDate) {
+                                                                  @RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+                                                                  @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         List<String[]> filaLista = tS.getmostproductsellcat(categoryname, startDate, endDate);
         List<QuantityProdCategoryDTO> dtoLista = new ArrayList<>();
         for (String[] columna : filaLista) {
