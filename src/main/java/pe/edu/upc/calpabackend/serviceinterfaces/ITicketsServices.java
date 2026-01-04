@@ -1,0 +1,23 @@
+package pe.edu.upc.calpabackend.serviceinterfaces;
+
+import org.springframework.data.repository.query.Param;
+import pe.edu.upc.calpabackend.dtos.TicketsDTO;
+import pe.edu.upc.calpabackend.entities.Suppliers;
+import pe.edu.upc.calpabackend.entities.Tickets;
+import pe.edu.upc.calpabackend.entities.TypePayments;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public interface ITicketsServices {
+    Tickets insert(Tickets tickets);
+    public List<Tickets> list();
+    public void delete(int id);
+    public void update(Tickets tickets);
+    TicketsDTO getTicketById(Integer id);
+    public Tickets listarId(int id);
+    public List<String[]> getTicketsByDatepay(LocalDate findDate, String username);
+    public List<String[]> getquantitypercategory(String categoryname, LocalDate startDate, LocalDate endDate);
+    public List<String[]> getmostproductsellcat(String categoryname, LocalDate startDate, LocalDate endDate);
+
+}
